@@ -1,0 +1,5 @@
+pyaudio
+soundfile
+SpeechRecognition[whisper-local]
+coqui-tts
+torch
