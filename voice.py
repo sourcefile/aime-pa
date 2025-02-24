@@ -8,10 +8,10 @@ from TTS.utils.synthesizer import Synthesizer
 AudioOutputFile = "Voice/speak.wav"
 
 class VoiceOutput:
-    def __init__(self):
+    def __init__(self, language):
         print("Initializing Text-2-Speech module...")
         self.talking = False
-        self.language = 'en'
+        self.language = language
         print("Loading Voice model...")
         device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
@@ -21,7 +21,7 @@ class VoiceOutput:
         self.model.tts_to_file(
             text = inputString,
             speaker_wav = "Voice/reference.wav",
-            language = "en",
+            language = self.language,
             file_path = AudioOutputFile
         )
 
