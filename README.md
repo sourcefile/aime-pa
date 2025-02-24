@@ -14,6 +14,7 @@ This project is mainly created as a pet project to understand the inner workings
 ```powershell
 python -m venv venv\
 .\venv\Scripts\activate
+pip install torch==2.1.1+cu118 torchaudio==2.1.1+cu118 --index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements.txt
 ```
 
