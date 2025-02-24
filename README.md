@@ -7,6 +7,9 @@ This project is mainly created as a pet project to understand the inner workings
 - Python (tested in 3.12)
 - [Text generation WebUI](https://github.com/oobabooga/text-generation-webui/) in API mode. If you want to use a different (cloud) service, update the contents of the `getCompletion` function.
 
+### Suggested models
+- [MaziyarPanahi/Meta-Llama-3-8B-Instruct-GGUF](https://huggingface.co/MaziyarPanahi/Meta-Llama-3-8B-Instruct-GGUF): This works pretty decent on an old PC with a RTX 970. Not the fastest, but it gets the job done.
+
 ## Setup
 ```powershell
 python -m venv venv\

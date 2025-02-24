@@ -41,10 +41,13 @@ class Assistant:
             "Content-Type": "application/json"
         }
         self.history.append({"role": "user", "content": messageText})
-        
+
+        messages = []
+        messages.append({"role": "system", "content": Personality})
+
         data = {
-            "mode": "chat",
-            "messages": self.history[HistorySize:]
+            "mode": "instruct",
+            "messages": messages + self.history[HistorySize:]
         }
 
         response = requests.post(LlmApiAddress, headers=headers, json=data, verify=False)
