@@ -4,7 +4,7 @@ import speech_recognition as sr
 # This part of the code is responsible for capturing mic input and passing it back to the assistant for processing.
 
 class InputHandler:
-    def __init__(self, assist=None):
+    def __init__(self, language, assist=None):
         if assist == None:
             # Initiate a fake assistant so this module can be tested and debugged independently of the main program.
             class MockAssistant(): running, talking, determineAction = True, False, None
@@ -14,6 +14,7 @@ class InputHandler:
 
         self.r = sr.Recognizer()
         self.Running = True
+        self.Language = language
     
     def listen(self):
         while self.Running and self.assistant.running:
@@ -23,7 +24,7 @@ class InputHandler:
 
             try:
                 print("\n\033[90mTranscribing..\033[0m")
-                result = self.r.recognize_whisper(audio, language="en")
+                result = self.r.recognize_whisper(audio, language=self.Language)
                 print(f"\033[1A\033[2K\033[0G{result}")
                 if self.assistant.determineAction != None: self.assistant.determineAction(result)
 

@@ -1,18 +1,23 @@
 import requests
+import os
+from dotenv import load_dotenv
 from input import InputHandler
 from voice import VoiceOutput
 
 # Config block
-AiName = 'AIme'
-UserName = "User"
-LlmApiAddress = "http://127.0.0.1:5000/v1/chat/completions"
+load_dotenv()
+HistorySize = os.getenv("COMPLETION_HISTORY_SIZE")
+AiName = os.getenv("AI_NAME")
+UserName = os.getenv("USER_NAME")
+LlmApiAddress = os.getenv("LLM_API_URI")
+Language = os.getenv("AI_LANGUAGE")
+
 Personality = f"""You are a personal AI assistant named {AiName}. You have fun helping users to get through their daily life.
 You talk in a polite but informal way. You're not afraid to make the occasional snarky remark if the situation calls for it.
 You try to answer questions in a friendly and concise way.
 
 Use 'you' or '{UserName}' to refer to the individual asking the questions even if they ask with 'I'.
 """
-HistorySize = -10
 
 class Assistant:
     def __init__(self, speaker):
@@ -47,7 +52,7 @@ class Assistant:
 
         data = {
             "mode": "instruct",
-            "messages": messages + self.history[HistorySize:]
+            "messages": messages + self.history[~int(HistorySize):]
         }
 
         response = requests.post(LlmApiAddress, headers=headers, json=data, verify=False)
@@ -58,9 +63,9 @@ class Assistant:
 
 def main():
     try:
-        speaker = VoiceOutput()
+        speaker = VoiceOutput(Language)
         pa = Assistant(speaker)
-        handler = InputHandler(pa)
+        handler = InputHandler(Language, pa)
         handler.listen()
     except (KeyboardInterrupt, SystemExit): pass
     finally:

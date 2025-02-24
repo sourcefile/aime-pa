@@ -14,7 +14,19 @@ This project is mainly created as a pet project to understand the inner workings
 ```powershell
 python -m venv venv\
 .\venv\Scripts\activate
+pip install torch==2.1.1+cu118 torchaudio==2.1.1+cu118 --index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements.txt
+```
+
+After installation, create a `.env` in the root of the project. Here's a default config to get started. Adjust the settings as needed:
+
+```
+AI_NAME=AIme
+USER_NAME=User
+LLM_API_URI=http://127.0.0.1:5000/v1/chat/completions
+COMPLETION_HISTORY_SIZE=10
+VOICE_REFERENCE_FILE=Voice/reference.wav
+AI_LANGUAGE=en
 ```
 
 ## Running the application
@@ -41,7 +53,7 @@ If a command is not recognized, the AI will automatically default to chatting wi
 - [x] Pass input into LLM and generate a response
 - [x] Text-2-speech
   - [ ] Give it a better voice model and voice
-- [ ] Create personality prompt
+- [x] Create personality prompt
 - [x] Create logic to determine action
   - [ ] Search wiki
   - [ ] RAG / Document search
@@ -49,7 +61,7 @@ If a command is not recognized, the AI will automatically default to chatting wi
   - [x] Shutdown
   - [ ] Chat (if no other action seems appropriate)
   - [ ] (long-term): Replace search for specific words in prompt with intent recognition
-- [ ] Get settings from config file instead of hardcoded
+- [x] Get settings from config file instead of hardcoded
 - [ ] Virtual Avatar
 - [ ] Emotions / Mood-recognition
 
