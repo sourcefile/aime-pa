@@ -4,3 +4,4 @@ SpeechRecognition[whisper-local]
 coqui-tts
 torch
 python-dotenv
+transformers

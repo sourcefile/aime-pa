@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from input import InputHandler
 from voice import VoiceOutput
+from mood import SentimentAnalyzer
 
 # Config block
 load_dotenv()
@@ -11,6 +12,7 @@ AiName = os.getenv("AI_NAME")
 UserName = os.getenv("USER_NAME")
 LlmApiAddress = os.getenv("LLM_API_URI")
 Language = os.getenv("AI_LANGUAGE")
+SentimentThreshold = os.getenv("SENTIMENT_THRESHOLD")
 
 Personality = f"""You are a personal AI assistant named {AiName}. You have fun helping users to get through their daily life.
 You talk in a polite but informal way. You're not afraid to make the occasional snarky remark if the situation calls for it.
@@ -20,11 +22,12 @@ Use 'you' or '{UserName}' to refer to the individual asking the questions even i
 """
 
 class Assistant:
-    def __init__(self, speaker):
+    def __init__(self, speaker, sentiment):
         self.running = True
         self.talking = False
         self.history = []
         self.speaker = speaker
+        self.sentiment = sentiment
 
     def determineAction(self, input):
         cleanString = "".join(ch for ch in input if ch not in ",.?!'").lower()  # Removes punctuations Whisper adds
@@ -38,7 +41,8 @@ class Assistant:
         else:
             answer = self.getCompletion(input)
         
-        print(answer) # TODO: Text-2-Speech
+        print(answer)
+        print(f"\n\033[90mThe AI seems to feel {self.sentiment.sentiment(answer)}\033[0m")
         self.speaker.speak(answer)
 
     def getCompletion(self, messageText):
@@ -64,7 +68,8 @@ class Assistant:
 def main():
     try:
         speaker = VoiceOutput(Language)
-        pa = Assistant(speaker)
+        sentiment = SentimentAnalyzer(float(SentimentThreshold))
+        pa = Assistant(speaker, sentiment)
         handler = InputHandler(Language, pa)
         handler.listen()
     except (KeyboardInterrupt, SystemExit): pass
